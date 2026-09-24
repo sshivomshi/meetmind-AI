@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeetmindAI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-area">
+        <img src="icons/logo.svg" alt="MeetmindAI Logo" class="header-logo">
+        <div class="brand">
+          <h1>MeetmindAI</h1>
+          <span class="subtitle">Real-time Meeting Co-pilot</span>
+        </div>
+      </div>
+      <div class="status-badge" id="statusBadge">
+        <span class="dot"></span>
+        <span class="badge-text" id="statusText">Idle</span>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      <!-- Session Panel -->
+      <section class="session-panel">
+        <div class="timer-display">
+          <div class="timer" id="sessionTimer">00:00:00</div>
+          <div class="info-row">
+            <span class="stat-label">Characters captured:</span>
+            <span class="stat-value" id="charCount">0</span>
+          </div>
+        </div>
+
+        <div class="mode-selector">
+          <label class="section-label">Capture Method</label>
+          <div class="toggle-group">
+            <button class="toggle-btn active" id="btnModeMeet" title="Scrapes captions from Google Meet automatically">
+              Google Meet Captions
+            </button>
+            <button class="toggle-btn" id="btnModeMic" title="Uses local microphone speech recognition for any tab/meeting">
+              Microphone Speech
+            </button>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button id="btnAction" class="btn btn-primary btn-glow">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>Start Capture</span>
+          </button>
+          <button id="btnDiscard" class="btn btn-secondary hidden" title="Discard current meeting session">
+            Discard
+          </button>
+        </div>
+      </section>
+
+      <!-- Live Stream Preview -->
+      <section class="preview-panel hidden" id="previewPanel">
+        <div class="panel-header">
+          <span class="section-label">Live Transcript Feed</span>
+          <span class="live-indicator">LIVE</span>
+        </div>
+        <div class="transcript-preview" id="previewBox">
+          <p class="placeholder-text">Waiting for speaking to begin...</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Navigation / Secondary Actions -->
+    <footer class="app-footer">
+      <button id="btnDashboard" class="btn btn-dashboard">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="9"></rect>
+          <rect x="14" y="3" width="7" height="5"></rect>
+          <rect x="14" y="12" width="7" height="9"></rect>
+          <rect x="3" y="16" width="7" height="5"></rect>
+        </svg>
+        <span>Open Analytics Dashboard</span>
+      </button>
+
+      <div class="settings-drawer">
+        <button id="btnToggleSettings" class="btn-settings-toggle">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          Settings
+        </button>
+        <div id="settingsContent" class="settings-content hidden">
+          <div class="form-group">
+            <label for="geminiKey">Gemini API Key</label>
+            <input type="password" id="geminiKey" placeholder="Paste your Gemini API key here..." autocomplete="off">
+            <small class="help-text">Leave blank to use Demo Mode (simulates AI outputs using curated templates).</small>
+          </div>
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <button id="btnSaveSettings" class="btn btn-save" style="flex:1; padding:8px; font-size:0.75rem;">Save Settings</button>
+            <button id="btnTestKey" class="btn btn-secondary" style="padding:8px 12px; font-size:0.75rem;">Test API</button>
+          </div>
+          <div id="apiStatusMessage" style="font-size:0.65rem; font-family:monospace; margin-top:6px; display:none; padding:4px 8px; border-radius:4px;"></div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
